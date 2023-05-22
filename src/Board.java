@@ -31,10 +31,10 @@ class Board extends JPanel{
     //all image slices
     List<Image> chunks;
     
-    List<Image> CorrectChunks; 
+    List<Image> correctChunks; 
 
     //count of correct positions
-    int correctCout=0;
+    int correctCount=0;
 
     
     //constructor
@@ -52,7 +52,7 @@ class Board extends JPanel{
 
 
     public int getCount(){
-        return correctCout;
+        return correctCount;
     }
 
     //loads an image, returs whether or not it was successful
@@ -61,6 +61,13 @@ class Board extends JPanel{
         try{
             BufferedImage newImage=ImageIO.read(new File(path));
             chunks=SliceImage(newImage, slicesPerSide);
+            
+            correctChunks= new ArrayList<Image>();
+            correctCount=chunks.size();
+            for(Image slice : chunks){
+                correctChunks.add(slice);
+            }
+            
             return true;
         }catch(Exception ex){
             ex.printStackTrace();
@@ -85,14 +92,48 @@ class Board extends JPanel{
 
     //swaps the given images
     private void swapImageSlices(Image image1, Image image2){
-        //swap the images
 
+
+        //don't swap the same image
+        if(image1==image2)
+            return;
+        
+        int localCorrectCount=0;
+
+        
         int image1Index=chunks.indexOf(image1);
         int image2Index=chunks.indexOf(image2);
 
+        //get the local correct postition count
+        if(image1Index!=correctChunks.indexOf(image1))
+            localCorrectCount++;
+        if(image2Index!=correctChunks.indexOf(image2))
+            localCorrectCount++;
+
+
+        //swap the images
         chunks.set(image1Index, image2);
         chunks.set(image2Index, image1);
+
+
+
+        //check for correct positions
+        if(chunks.indexOf(image1)==correctChunks.indexOf(image1))
+            localCorrectCount++;
+        else
+            localCorrectCount--;
+            
+        if(chunks.indexOf(image1)==correctChunks.indexOf(image2))
+            localCorrectCount++;
+        else
+            localCorrectCount--;
+
+        correctCount+=localCorrectCount;
         
+        
+        
+        
+        // }
     }
 
     //return you the image at these coords, returns null if it doesn't exist

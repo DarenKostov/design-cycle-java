@@ -89,15 +89,16 @@ class Puzzle implements ActionListener, MouseListener{
 
             
             if(board.loadImage(imagePath.getText(), slicesPerSide)){
+                correctPositions.setText("Correct Positions: "+board.getCount());
                 frame.repaint();
                 JOptionPane.showMessageDialog(frame, "Loaded image successfully");
             }else
                 JOptionPane.showMessageDialog(frame, "Loading image failed. Wrong file path?");
 
-
             
         }else if(event.getSource().equals(shuffleImageSlices)){
             board.scrableSlices();
+            correctPositions.setText("Correct Positions: "+board.getCount());
             frame.repaint();
         }
 
