@@ -41,21 +41,19 @@ class Board extends JPanel{
     public Board(){
         super();
 
-
-        
-        // loadImage("image.jpeg");
-        // scrableSlices();
-
-
         
     }
 
-
+    //tells you if all images match
     public boolean allMatch(){
         if(correctCount==chunks.size())
             return true;
         return false;
+    }
     
+    //tells you how many images match
+    public int getCount(){
+        return correctCount;
     }
 
     //loads an image, returs whether or not it was successful
