@@ -138,13 +138,14 @@ public void mouseReleased(MouseEvent e){
 	int image2Y = e.getY();
 
 	
-	if (board.swapCoords(image1X,image1y,image2X,image2Y) == true) {
 		//switch the image
+	if (board.swapCoords(image1X,image1y,image2X,image2Y) == true) {
+  
+    frame.repaint();
+    correctPositions.setText("Correct Positions: "+board.getCount());
 			if (board.allMatch() == true) {
 				JOptionPane.showMessageDialog(frame, "You win!");
 			}
-    frame.repaint();
-    correctPositions.setText("Correct Positions: "+board.getCount());
 	}
 	else {
 		 JOptionPane.showMessageDialog(frame, "no image clicked");

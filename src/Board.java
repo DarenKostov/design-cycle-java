@@ -46,9 +46,17 @@ class Board extends JPanel{
 
     //tells you if all images match
     public boolean allMatch(){
-        if(correctCount==chunks.size())
-            return true;
-        return false;
+
+        
+        for(int i=0; i<chunks.size(); i++)
+            if(chunks.get(i)!=correctChunks.get(i))
+                return false;
+        return true;
+
+    
+        // if(correctCount==chunks.size())
+        //     return true;
+        // return false;
     }
     
     //tells you how many images match
