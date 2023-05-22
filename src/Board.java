@@ -7,16 +7,24 @@
 */
 
 import javax.swing.JPanel;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Image;
+
+import java.awt.Graphics;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.awt.Image;
+
+
 
 class Board extends JPanel{
 
 
     //all image slices
-    List<Image> chunks; 
+    List<Image> chunks;
+    
+    List<Image> CorrectChunks; 
 
     //count of correct positions
     int correctCout=0;
@@ -27,6 +35,10 @@ class Board extends JPanel{
         super();
     }
 
+
+    public int getCount(){
+        return correctCout;
+    }
 
     //loads an image, returs whether or not it was successful
     public boolean loadImage(String path){
@@ -61,11 +73,13 @@ class Board extends JPanel{
 
     //return you the image at these coords, returns null if it doesn't exist
     private Image getImageAt(int x, int y){
-
+        
         return null;
-    
     }
 
+    public void scrableSlices(){
+        //do a bunch of image swaps
+    }
 
     //slices the image into chunks and returns it
     public ArrayList<Image> SliceImage(Image in){
@@ -74,6 +88,15 @@ class Board extends JPanel{
 
     //draw the image slices
     public void paintComponent(Graphics g){
-      super.paintComponent(g);
+        super.paintComponent(g);
+
+
+
+
+        
+        // for(int i=0; i<chunks.size(); i++)
+        //     g.drawImage(chunks.get(i), 10*i, 0, 10, 10, null);
+
+    
     }
 }
