@@ -51,8 +51,11 @@ class Board extends JPanel{
     }
 
 
-    public int getCount(){
-        return correctCount;
+    public boolean allMatch(){
+        if(correctCount==chunks.size())
+            return true;
+        return false;
+    
     }
 
     //loads an image, returs whether or not it was successful
@@ -133,13 +136,33 @@ class Board extends JPanel{
         
         
         
-        // }
     }
 
     //return you the image at these coords, returns null if it doesn't exist
     private Image getImageAt(int x, int y){
         
-        return null;
+
+        //how many by how many image slices
+        int matrixWidth=(int)Math.sqrt(chunks.size());
+
+        //how big should each slice be (give heigh/width they are the same)
+        int size=700/matrixWidth;
+
+
+        //location of the mouse in terms of the grid
+        int locationX=x/size;
+        int locationY=y/size;
+
+
+        //chunk is out of bounds
+        if(locationX>=matrixWidth || locationY>=matrixWidth)
+            return null;
+        
+        
+        int index=locationX+locationY*matrixWidth;
+        return chunks.get(index);
+        
+        
     }
 
     public void scrableSlices(){
