@@ -46,17 +46,9 @@ class Board extends JPanel{
 
     //tells you if all images match
     public boolean allMatch(){
-
-        
-        for(int i=0; i<chunks.size(); i++)
-            if(chunks.get(i)!=correctChunks.get(i))
-                return false;
-        return true;
-
-    
-        // if(correctCount==chunks.size())
-        //     return true;
-        // return false;
+        if(correctCount==chunks.size())
+            return true;
+        return false;
     }
     
     //tells you how many images match
@@ -131,7 +123,7 @@ class Board extends JPanel{
         if(chunks.indexOf(image1)==correctChunks.indexOf(image1))
             localCorrectCount2++;
             
-        if(chunks.indexOf(image1)==correctChunks.indexOf(image2))
+        if(chunks.indexOf(image2)==correctChunks.indexOf(image2))
             localCorrectCount2++;
 
 
@@ -143,12 +135,13 @@ class Board extends JPanel{
             2-2 //impossible
             1-0 //all were wrong, swapped one in the correct place
             0-1 //one was right, swapped it wrong
-            2-0 //were wrong, swaped them correctky
+            2-0 //were wrong, swaped them correctly
             0-2 //were right, swaped them wrong
 
         */
 
-        correctCount+=localCorrectCount2-localCorrectCount1;
+        
+        correctCount+=(localCorrectCount2-localCorrectCount1);
         
         
         
