@@ -43,8 +43,8 @@ class Board extends JPanel{
 
 
         
-        loadImage("image.jpeg");
-        scrableSlices();
+        // loadImage("image.jpeg");
+        // scrableSlices();
 
 
         
@@ -56,11 +56,11 @@ class Board extends JPanel{
     }
 
     //loads an image, returs whether or not it was successful
-    public boolean loadImage(String path){
+    public boolean loadImage(String path, int slicesPerSide){
 
         try{
             BufferedImage newImage=ImageIO.read(new File(path));
-            chunks=SliceImage(newImage);
+            chunks=SliceImage(newImage, slicesPerSide);
             return true;
         }catch(Exception ex){
             ex.printStackTrace();
@@ -79,7 +79,7 @@ class Board extends JPanel{
             return false;
         }
         
-        SliceImage(null);
+        SliceImage(null, 2);
         return true;
     }
 
@@ -103,22 +103,22 @@ class Board extends JPanel{
 
     public void scrableSlices(){
         //do a bunch of image swaps
-        for(int i=0; i<30; i++){
+        for(int i=0; i<chunks.size()*2; i++){
             int randomIndex=(int)(Math.random()*chunks.size());
             swapImageSlices(chunks.get(0), chunks.get(randomIndex));    
         }
     }
 
     //slices the image into chunks and returns it
-    public ArrayList<Image> SliceImage(BufferedImage in){
+    private ArrayList<Image> SliceImage(BufferedImage in, int slicesPerSide){
 
         ArrayList<Image> output= new ArrayList<Image>();
 
-
-        //slice up image into 25 pieces
-        for(int x=0; x<5; x++){
-            for(int y=0; y<5; y++){
-                output.add(in.getSubimage(in.getWidth(this)/5*x, in.getHeight(this)/5*y, in.getWidth(this)/5, in.getHeight(this)/5));
+    
+        //slice up image into slicePerSide**2 pieces
+        for(int y=0; y<slicesPerSide; y++){
+            for(int x=0; x<slicesPerSide; x++){
+                output.add(in.getSubimage(in.getWidth(this)/slicesPerSide*x, in.getHeight(this)/slicesPerSide*y, in.getWidth(this)/slicesPerSide, in.getHeight(this)/slicesPerSide));
             }
         }
 
@@ -130,11 +130,18 @@ class Board extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
+        if(chunks==null)
+            return;
+        
+        //how many by how many image slices
+        int matrixWidth=(int)Math.sqrt(chunks.size());
 
+        //how big should each slice be (give heigh/widthm they are the same)
+        int size=700/matrixWidth;
 
         
         for(int i=0; i<chunks.size(); i++)
-            g.drawImage(chunks.get(i), 105*(i%5), (i/5)*105, 100, 100, null);
+            g.drawImage(chunks.get(i), size*(i%matrixWidth), (i/matrixWidth)*size, size, size, null);
 
     
     }

@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.JOptionPane;
 
 import java.awt.Container;
 
@@ -33,7 +34,8 @@ class Puzzle implements ActionListener, MouseListener{
     
     JTextField imagePath= new JTextField("Image Path");
     JButton loadImage= new JButton("Load Image");
-    JButton shuffleImageSlices= new JButton("Shuffle");
+    JTextField slicesPerSideField= new JTextField("Slices per Side");
+    JButton shuffleImageSlices= new JButton("Scramble");
     JLabel correctPositions= new JLabel("Correct Positions: ???");
     
     Container south= new Container();
@@ -43,7 +45,7 @@ class Puzzle implements ActionListener, MouseListener{
 
 
         
-        frame.setSize(600, 620);
+        frame.setSize(700, 727);
         frame.setResizable(false);
         
         frame.setLayout(new BorderLayout());
@@ -56,11 +58,11 @@ class Puzzle implements ActionListener, MouseListener{
         // imagePath.addActionListener(this);
         south.add(loadImage);
         loadImage.addActionListener(this);
+        south.add(slicesPerSideField);
         south.add(shuffleImageSlices);
         shuffleImageSlices.addActionListener(this);
         south.add(correctPositions);
         frame.add(south, BorderLayout.SOUTH);
-
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -73,8 +75,33 @@ class Puzzle implements ActionListener, MouseListener{
 
 
     @Override
-    public void actionPerformed(ActionEvent event) {
+    public void actionPerformed(ActionEvent event){
+        if(event.getSource().equals(loadImage)){
+
+            int slicesPerSide=3;
+            try{
+                slicesPerSide=Integer.parseInt(slicesPerSideField.getText());
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(frame, "Put in slices per side next time, must be in integer. Defaulting to 3.");
+            }
+
+
+
+            
+            board.loadImage(imagePath.getText(), slicesPerSide);
+
+
+            
+            frame.repaint();
+        }else if(event.getSource().equals(shuffleImageSlices)){
+            board.scrableSlices();
+            frame.repaint();
+        }
+
+    
     }
+
+    
     @Override
     public void mouseClicked(MouseEvent event){
     }
