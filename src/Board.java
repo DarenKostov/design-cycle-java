@@ -3,19 +3,26 @@
     Daren Kostov, Parker Babst
 
     This class controls the board from image loading to slice swapping
+
+
+    Sources:
+    https://stackoverflow.com/questions/9132149/how-to-convert-buffered-image-to-image-and-vice-versa
     
 */
 
-import javax.swing.JPanel;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Image;
 
+import javax.swing.JPanel;
 import java.awt.Graphics;
+
 import javax.imageio.ImageIO;
 import java.io.File;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+
 
 
 class Board extends JPanel{
@@ -37,6 +44,7 @@ class Board extends JPanel{
 
         
         loadImage("image.jpeg");
+        scrableSlices();
 
 
         
@@ -78,6 +86,13 @@ class Board extends JPanel{
     //swaps the given images
     private void swapImageSlices(Image image1, Image image2){
         //swap the images
+
+        int image1Index=chunks.indexOf(image1);
+        int image2Index=chunks.indexOf(image2);
+
+        chunks.set(image1Index, image2);
+        chunks.set(image2Index, image1);
+        
     }
 
     //return you the image at these coords, returns null if it doesn't exist
@@ -88,6 +103,10 @@ class Board extends JPanel{
 
     public void scrableSlices(){
         //do a bunch of image swaps
+        for(int i=0; i<30; i++){
+            int randomIndex=(int)(Math.random()*chunks.size());
+            swapImageSlices(chunks.get(0), chunks.get(randomIndex));    
+        }
     }
 
     //slices the image into chunks and returns it
