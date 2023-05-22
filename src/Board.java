@@ -22,7 +22,7 @@ class Board extends JPanel{
 
 
     //all image slices
-    List<Image> chunks= new ArrayList<Image>();
+    List<Image> chunks;
     
     List<Image> CorrectChunks; 
 
@@ -36,20 +36,7 @@ class Board extends JPanel{
 
 
         
-        try{
-            BufferedImage newImage=ImageIO.read(new File("image.jpeg"));
-
-            for(int x=0; x<5; x++){
-                for(int y=0; y<5; y++){
-                    chunks.add(newImage.getSubimage(newImage.getWidth(this)/5*x, newImage.getHeight(this)/5*y, newImage.getWidth(this)/5, newImage.getHeight(this)/5));
-                }
-            }
-            
-        }catch(Exception ex){
-            ex.printStackTrace();
-            System.out.println("bad");
-        }
-        
+        loadImage("image.jpeg");
 
 
         
@@ -63,13 +50,15 @@ class Board extends JPanel{
     //loads an image, returs whether or not it was successful
     public boolean loadImage(String path){
 
-        if(false){
+        try{
+            BufferedImage newImage=ImageIO.read(new File(path));
+            chunks=SliceImage(newImage);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
             return false;
         }
 
-
-        SliceImage(null);
-        return true;
     }
 
     //swaps the images at these coords, return true if the swap increased the correct count
@@ -87,7 +76,7 @@ class Board extends JPanel{
     }
 
     //swaps the given images
-    private void swapImages(Image image1, Image image2){
+    private void swapImageSlices(Image image1, Image image2){
         //swap the images
     }
 
@@ -102,8 +91,20 @@ class Board extends JPanel{
     }
 
     //slices the image into chunks and returns it
-    public ArrayList<Image> SliceImage(Image in){
-        return null;
+    public ArrayList<Image> SliceImage(BufferedImage in){
+
+        ArrayList<Image> output= new ArrayList<Image>();
+
+
+        //slice up image into 25 pieces
+        for(int x=0; x<5; x++){
+            for(int y=0; y<5; y++){
+                output.add(in.getSubimage(in.getWidth(this)/5*x, in.getHeight(this)/5*y, in.getWidth(this)/5, in.getHeight(this)/5));
+            }
+        }
+
+    
+        return output;
     }
 
     //draw the image slices
