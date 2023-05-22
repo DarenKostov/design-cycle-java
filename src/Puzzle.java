@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JTextField;
+
 import java.awt.Container;
 
 import java.awt.BorderLayout;
@@ -25,16 +27,44 @@ import java.awt.event.MouseEvent;
 
 class Puzzle implements ActionListener, MouseListener{
 
-    Board board=new Board();
+    Board board =new Board();
+    // JPanel board =new JPanel();
     JFrame frame= new JFrame("Puzzle!");
     
+    JTextField imagePath= new JTextField("Image Path");
+    JButton loadImage= new JButton("Load Image");
+    JButton shuffleImageSlices= new JButton("Shuffle");
+    JLabel correctPositions= new JLabel("Correct Positions: ???");
+    
+    Container south= new Container();
 
     
-    public void Pizzle(){
-        frame.setSize(600, 400);
+    public Puzzle(){
+
+
+        
+        frame.setSize(600, 620);
         frame.setResizable(false);
+        
+        frame.setLayout(new BorderLayout());
+        frame.add(board, BorderLayout.CENTER);
 
-    
+
+        //buttons and text field setup
+        south.setLayout(new GridLayout(1, 3));
+        south.add(imagePath);
+        // imagePath.addActionListener(this);
+        south.add(loadImage);
+        loadImage.addActionListener(this);
+        south.add(shuffleImageSlices);
+        shuffleImageSlices.addActionListener(this);
+        south.add(correctPositions);
+        frame.add(south, BorderLayout.SOUTH);
+
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+
     }
 
     public static void main(String[] args){

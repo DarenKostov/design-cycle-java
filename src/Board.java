@@ -15,14 +15,14 @@ import java.awt.Graphics;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.Image;
-
+import java.awt.image.BufferedImage;
 
 
 class Board extends JPanel{
 
 
     //all image slices
-    List<Image> chunks;
+    List<Image> chunks= new ArrayList<Image>();
     
     List<Image> CorrectChunks; 
 
@@ -33,6 +33,26 @@ class Board extends JPanel{
     //constructor
     public Board(){
         super();
+
+
+        
+        try{
+            BufferedImage newImage=ImageIO.read(new File("image.jpeg"));
+
+            for(int x=0; x<5; x++){
+                for(int y=0; y<5; y++){
+                    chunks.add(newImage.getSubimage(newImage.getWidth(this)/5*x, newImage.getHeight(this)/5*y, newImage.getWidth(this)/5, newImage.getHeight(this)/5));
+                }
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+            System.out.println("bad");
+        }
+        
+
+
+        
     }
 
 
@@ -92,10 +112,9 @@ class Board extends JPanel{
 
 
 
-
         
-        // for(int i=0; i<chunks.size(); i++)
-        //     g.drawImage(chunks.get(i), 10*i, 0, 10, 10, null);
+        for(int i=0; i<chunks.size(); i++)
+            g.drawImage(chunks.get(i), 105*(i%5), (i/5)*105, 100, 100, null);
 
     
     }
