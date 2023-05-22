@@ -99,17 +99,18 @@ class Board extends JPanel{
         if(image1==image2)
             return;
         
-        int localCorrectCount=0;
+        int localCorrectCount1=0;
+        int localCorrectCount2=0;
 
         
         int image1Index=chunks.indexOf(image1);
         int image2Index=chunks.indexOf(image2);
 
-        //get the local correct postition count
-        if(image1Index!=correctChunks.indexOf(image1))
-            localCorrectCount++;
-        if(image2Index!=correctChunks.indexOf(image2))
-            localCorrectCount++;
+        //get local correct count before swap
+        if(image1Index==correctChunks.indexOf(image1))
+            localCorrectCount1++;
+        if(image2Index==correctChunks.indexOf(image2))
+            localCorrectCount1++;
 
 
         //swap the images
@@ -118,18 +119,28 @@ class Board extends JPanel{
 
 
 
-        //check for correct positions
+        //get local correct count before swap
         if(chunks.indexOf(image1)==correctChunks.indexOf(image1))
-            localCorrectCount++;
-        else
-            localCorrectCount--;
+            localCorrectCount2++;
             
         if(chunks.indexOf(image1)==correctChunks.indexOf(image2))
-            localCorrectCount++;
-        else
-            localCorrectCount--;
+            localCorrectCount2++;
 
-        correctCount+=localCorrectCount;
+
+        /*
+            0-0 //were wrong; swaped them wrong
+            1-1 //one was right, other was wrong; swaped the other one correctly but wrong the 1st one
+            1-2 //impossible
+            2-1 //impossible
+            2-2 //impossible
+            1-0 //all were wrong, swapped one in the correct place
+            0-1 //one was right, swapped it wrong
+            2-0 //were wrong, swaped them correctky
+            0-2 //were right, swaped them wrong
+
+        */
+
+        correctCount+=localCorrectCount2-localCorrectCount1;
         
         
         
