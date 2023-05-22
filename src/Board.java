@@ -87,7 +87,7 @@ class Board extends JPanel{
             return false;
         }
         
-        SliceImage(null, 2);
+        swapImageSlices(image1, image2);
         return true;
     }
 

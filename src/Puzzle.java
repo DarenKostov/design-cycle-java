@@ -67,6 +67,8 @@ public Puzzle(){
     south.add(correctPositions);
     frame.add(south, BorderLayout.SOUTH);
     
+    frame.addMouseListener(this);
+
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setVisible(true);
     
@@ -129,17 +131,20 @@ public void mousePressed(MouseEvent e){
 	
 
 }
+@Override
 public void mouseReleased(MouseEvent e){
     //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
 	int image2X = e.getX();
 	int image2Y = e.getY();
-	
+
 	
 	if (board.swapCoords(image1X,image1y,image2X,image2Y) == true) {
 		//switch the image
-			if (allMatch == true) {
+			if (board.allMatch() == true) {
 				JOptionPane.showMessageDialog(frame, "You win!");
 			}
+    frame.repaint();
+    correctPositions.setText("Correct Positions: "+board.getCount());
 	}
 	else {
 		 JOptionPane.showMessageDialog(frame, "no image clicked");
