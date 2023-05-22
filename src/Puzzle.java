@@ -144,11 +144,11 @@ public void mouseReleased(MouseEvent e){
     frame.repaint();
     correctPositions.setText("Correct Positions: "+board.getCount());
 			if (board.allMatch() == true) {
-				JOptionPane.showMessageDialog(frame, "You win!");
+				JOptionPane.showMessageDialog(frame, "You win! All image slices match!");
 			}
 	}
 	else {
-		 JOptionPane.showMessageDialog(frame, "no image clicked");
+		 JOptionPane.showMessageDialog(frame, "You either clicked and dragged on the same image or\nSelected a non-existant image slice.");
 	}
 
 }
