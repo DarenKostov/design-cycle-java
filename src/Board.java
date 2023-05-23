@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
+import java.awt.Color;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -36,6 +37,7 @@ class Board extends JPanel{
     //count of correct positions
     int correctCount=0;
 
+    Image selectedImageSlice;
 
     boolean haveWeScrabled=false;
     
@@ -100,6 +102,14 @@ class Board extends JPanel{
         return true;
     }
 
+    //selects an image slice at these coords
+    public boolean selectImage(int x, int y){
+        selectedImageSlice=getImageAt(x, y);
+
+        return selectedImageSlice!=null;
+    }
+
+    
     //swaps the given images
     private void swapImageSlices(Image image1, Image image2){
 
@@ -259,9 +269,22 @@ class Board extends JPanel{
         int size=700/matrixWidth;
 
         
-        for(int i=0; i<chunks.size(); i++)
+        for(int i=0; i<chunks.size(); i++){    
             g.drawImage(chunks.get(i), size*(i%matrixWidth), (i/matrixWidth)*size, size, size, null);
+        }
 
+
+
+        if(selectedImageSlice==null)
+            return;
+        //draw the selected node        
+        int index=chunks.indexOf(selectedImageSlice);
+        
+        g.setColor(new Color(255, 0, 0));
+        g.fillRect(size*(index%matrixWidth)-5, (index/matrixWidth)*size-5, size+10, size+10);  
+        g.setColor(new Color(0, 255, 255));
+        g.fillRect(size*(index%matrixWidth)-2, (index/matrixWidth)*size-2, size+4, size+4);  
+        g.drawImage(chunks.get(index), size*(index%matrixWidth), (index/matrixWidth)*size, size, size, null);
     
     }
 }

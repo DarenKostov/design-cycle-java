@@ -140,14 +140,16 @@ public void mouseExited(MouseEvent event){
 public void mousePressed(MouseEvent e){
   prevX=e.getX();
   prevY=e.getY();
+  board.selectImage(prevX, prevY);
+  frame.repaint();
 }
 @Override
 public void mouseReleased(MouseEvent e){
   //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
-  int prevX=e.getX();
-  int prevY=e.getY();
 
-	
+  //unselect the image
+  board.selectImage(999999, 999999);
+  
 		//switch the image
   if(board.swapCoords(prevX, prevY, e.getX(), e.getY())){
   //success
