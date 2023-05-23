@@ -30,19 +30,23 @@ import java.awt.event.MouseEvent;
 
 class Puzzle implements ActionListener, MouseListener{
 
+
 Board board =new Board();
-// JPanel board =new JPanel();
 JFrame frame= new JFrame("Puzzle!");
 
+
+//controls
 JTextField imagePath= new JTextField("Image Path");
 JButton loadImage= new JButton("Load Image");
 JTextField slicesPerSideField= new JTextField("Slices per Side");
 JButton shuffleImageSlices= new JButton("Scramble");
 JLabel correctPositions= new JLabel("Correct Positions: ???");
-
 Container south= new Container();
-int image1X;
-int image1y;
+
+
+//previous position of the mouse
+int prevX;
+int prevY;
 
 public Puzzle(){
 
@@ -84,6 +88,8 @@ public static void main(String[] args){
 public void actionPerformed(ActionEvent event){
     if(event.getSource().equals(loadImage)){
 
+
+        //get slices pre side
         int slicesPerSide=3;
         try{
             slicesPerSide=Integer.parseInt(slicesPerSideField.getText());
@@ -91,8 +97,12 @@ public void actionPerformed(ActionEvent event){
             JOptionPane.showMessageDialog(frame, "Put in slices per side next time, must be in integer. Defaulting to 3.");
         }
 
-        
+
+        //get image
         if(board.loadImage(imagePath.getText(), slicesPerSide)){
+            //update scramble button
+            shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
+
             correctPositions.setText("Correct Positions: "+board.getCount());
             frame.repaint();
             JOptionPane.showMessageDialog(frame, "Loaded image successfully");
@@ -104,6 +114,9 @@ public void actionPerformed(ActionEvent event){
         board.scrableSlices();
         correctPositions.setText("Correct Positions: "+board.getCount());
         frame.repaint();
+
+        //update scramble button
+        shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
     }
 
 
@@ -125,31 +138,35 @@ public void mouseExited(MouseEvent event){
 }
 @Override
 public void mousePressed(MouseEvent e){
-	image1X = e.getX();
-	image1y = e.getY();
-
-	
-
+  prevX=e.getX();
+  prevY=e.getY();
 }
 @Override
 public void mouseReleased(MouseEvent e){
-    //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
-	int image2X = e.getX();
-	int image2Y = e.getY();
+  //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
+  int prevX=e.getX();
+  int prevY=e.getY();
 
 	
 		//switch the image
-	if (board.swapCoords(image1X,image1y,image2X,image2Y) == true) {
+  if(board.swapCoords(prevX, prevY, e.getX(), e.getY())){
+  //success
   
     frame.repaint();
     correctPositions.setText("Correct Positions: "+board.getCount());
-			if (board.allMatch() == true) {
-				JOptionPane.showMessageDialog(frame, "You win! All image slices match!");
-			}
-	}
-	else {
-		 JOptionPane.showMessageDialog(frame, "You either clicked and dragged on the same image or\nSelected a non-existant image slice.");
-	}
+
+    //update scramble button
+    shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
+    
+    if(board.allMatch()){
+      JOptionPane.showMessageDialog(frame, "You win! All image slices match!");
+    }
+
+  
+  }else{
+  //failure
+    JOptionPane.showMessageDialog(frame, "You either clicked and dragged on the same image or\nSelected a non-existant image slice.");
+  }
 
 }
 

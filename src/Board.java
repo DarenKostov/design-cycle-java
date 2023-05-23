@@ -36,6 +36,8 @@ class Board extends JPanel{
     //count of correct positions
     int correctCount=0;
 
+
+    boolean haveWeScrabled=false;
     
     //constructor
     public Board(){
@@ -50,6 +52,11 @@ class Board extends JPanel{
             return true;
         return false;
     }
+
+    //tells us if we just scrambled the puzzle
+    public boolean justScrambled(){
+        return haveWeScrabled;
+    }
     
     //tells you how many images match
     public int getCount(){
@@ -63,6 +70,7 @@ class Board extends JPanel{
             BufferedImage newImage=ImageIO.read(new File(path));
             chunks=SliceImage(newImage, slicesPerSide);
             
+            haveWeScrabled=false;
             correctChunks= new ArrayList<Image>();
             correctCount=chunks.size();
             for(Image slice : chunks){
@@ -86,7 +94,8 @@ class Board extends JPanel{
         if(image1==null || image2==null || image1==image2){
             return false;
         }
-        
+
+        haveWeScrabled=false;
         swapImageSlices(image1, image2);
         return true;
     }
@@ -176,11 +185,47 @@ class Board extends JPanel{
     }
 
     public void scrableSlices(){
+
+        //do image swaps untill there are no matches to the original positions
+        if(haveWeScrabled){
+            
+            for(int i=0; i<chunks.size(); i++){
+
+                int countBeforeSwap=correctCount;
+        
+                int randomIndex=(int)(Math.random()*chunks.size());
+                swapImageSlices(chunks.get(i), chunks.get(randomIndex));
+
+
+                //this swap solved the puzzle a little, undo it
+                if(countBeforeSwap<correctCount){
+                    swapImageSlices(chunks.get(i), chunks.get(randomIndex));
+                    i--;
+                }
+            }
+
+            System.out.println(correctCount);
+
+            if(correctCount!=0){
+                scrableSlices();
+            }
+            
+            haveWeScrabled=false;
+            return;
+        }
+        
+
+    
+        
         //do a bunch of image swaps
         for(int i=0; i<chunks.size()*2; i++){
             int randomIndex=(int)(Math.random()*chunks.size());
             swapImageSlices(chunks.get(0), chunks.get(randomIndex));    
         }
+
+        
+        haveWeScrabled=true;
+        
     }
 
     //slices the image into chunks and returns it
