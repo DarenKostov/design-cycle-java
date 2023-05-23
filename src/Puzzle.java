@@ -31,24 +31,24 @@ import java.awt.event.MouseEvent;
 class Puzzle implements ActionListener, MouseListener{
 
 
-Board board =new Board();
-JFrame frame= new JFrame("Puzzle!");
+  Board board =new Board();
+  JFrame frame= new JFrame("Puzzle!");
 
 
-//controls
-JTextField imagePath= new JTextField("Image Path");
-JButton loadImage= new JButton("Load Image");
-JTextField slicesPerSideField= new JTextField("Slices per Side");
-JButton shuffleImageSlices= new JButton("Scramble");
-JLabel correctPositions= new JLabel("Correct Positions: ???");
-Container south= new Container();
+  //controls
+  JTextField imagePath= new JTextField("Image Path");
+  JButton loadImage= new JButton("Load Image");
+  JTextField slicesPerSideField= new JTextField("Slices per Side");
+  JButton shuffleImageSlices= new JButton("Scramble");
+  JLabel correctPositions= new JLabel("Correct Positions: ???");
+  Container south= new Container();
 
 
-//previous position of the mouse
-int prevX;
-int prevY;
+  //previous position of the mouse
+  int prevX;
+  int prevY;
 
-public Puzzle(){
+  public Puzzle(){
 
 
     
@@ -62,7 +62,6 @@ public Puzzle(){
     //buttons and text field setup
     south.setLayout(new GridLayout(1, 3));
     south.add(imagePath);
-    // imagePath.addActionListener(this);
     south.add(loadImage);
     loadImage.addActionListener(this);
     south.add(slicesPerSideField);
@@ -77,16 +76,16 @@ public Puzzle(){
     frame.setVisible(true);
     
 
-}
+  }
 
-public static void main(String[] args){
-    new Puzzle();
-}
+  public static void main(String[] args){
+      new Puzzle();
+  }
 
 
-@Override
-public void actionPerformed(ActionEvent event){
-    if(event.getSource().equals(loadImage)){
+  @Override
+  public void actionPerformed(ActionEvent event){
+      if(event.getSource().equals(loadImage)){
 
 
         //get slices pre side
@@ -119,58 +118,57 @@ public void actionPerformed(ActionEvent event){
         shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
     }
 
-
-        
-
-
-}
-
-
-@Override
-public void mouseClicked(MouseEvent event){
-}
-@Override
-public void mouseEntered(MouseEvent event){
-}
-
-@Override
-public void mouseExited(MouseEvent event){
-}
-@Override
-public void mousePressed(MouseEvent e){
-  prevX=e.getX();
-  prevY=e.getY();
-  board.selectImage(prevX, prevY);
-  frame.repaint();
-}
-@Override
-public void mouseReleased(MouseEvent e){
-  //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
-
-  //unselect the image
-  board.selectImage(999999, 999999);
-  
-		//switch the image
-  if(board.swapCoords(prevX, prevY, e.getX(), e.getY())){
-  //success
-  
-    frame.repaint();
-    correctPositions.setText("Correct Positions: "+board.getCount());
-
-    //update scramble button
-    shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
-    
-    if(board.allMatch()){
-      JOptionPane.showMessageDialog(frame, "You win! All image slices match!");
-    }
-
-  
-  }else{
-  //failure
-    JOptionPane.showMessageDialog(frame, "You either clicked and dragged on the same image or\nSelected a non-existant image slice.");
   }
 
-}
+
+  @Override
+  public void mouseClicked(MouseEvent event){
+  }
+  @Override
+  public void mouseEntered(MouseEvent event){
+  }
+
+  @Override
+  public void mouseExited(MouseEvent event){
+  }
+  @Override
+  public void mousePressed(MouseEvent e){
+    prevX=e.getX();
+    prevY=e.getY();
+    board.selectImage(prevX, prevY);
+    frame.repaint();
+  }
+  @Override
+  public void mouseReleased(MouseEvent e){
+    //similar to the edge creation, click on 2 images and flip them (instead of drawing a line) 
+
+    //unselect the image
+    board.selectImage(999999, 999999);
+  
+  		//switch the image
+    if(board.swapCoords(prevX, prevY, e.getX(), e.getY())){
+    //success
+  
+      correctPositions.setText("Correct Positions: "+board.getCount());
+
+      //update scramble button
+      shuffleImageSlices.setText(board.justScrambled()? "True Shuffle" : "Shuffle");
+
+      //we won?
+      if(board.allMatch()){
+        frame.repaint();
+        JOptionPane.showMessageDialog(frame, "You win! All image slices match!");
+        return;
+      }
+
+  
+    }else{
+    //failure
+      JOptionPane.showMessageDialog(frame, "You either clicked and dragged on the same image or\nSelected a non-existant image slice.");
+    }
+
+      frame.repaint();
+  }
 
 
 
